@@ -16,6 +16,7 @@ import Svg exposing (Svg)
 
 type Msg
     = Update ABC Direction String
+    | Reset
 
 
 type Direction
@@ -37,20 +38,26 @@ type alias Model =
     { a : Point, b : Point, c : Point }
 
 
+initialModel : Model
+initialModel =
+    { a = { x = 125.0, y = 75.0 }, b = { x = 250.0, y = 0.0 }, c = { x = 0.0, y = 250.0 } }
+
+
 placeInsideDiv : Model -> Svg Msg -> Html Msg
 placeInsideDiv model svg =
     div [ style "padding" "50px" ]
         [ svg
-        , rangeXY { label = "A", model = model.a, msg = Update A }
+        , rangeXY { label = "A (Origin)", model = model.a, msg = Update A }
         , rangeXY { label = "B", model = model.b, msg = Update B }
         , rangeXY { label = "C", model = model.c, msg = Update C }
+        , resetButton { label = "Reset", msg = Reset }
         ]
 
 
 main : Program () Model Msg
 main =
     Browser.sandbox
-        { init = { a = { x = 125.0, y = 75.0 }, b = { x = 250.0, y = 0.0 }, c = { x = 0.0, y = 250.0 } }
+        { init = initialModel
         , view = view
         , update = update
         }
@@ -66,27 +73,32 @@ view model =
             }
     in
     box
-        |> createPicture george
+        |> createPicture fLetter
         |> toSvgWithBoxes ( 500, 500 ) []
         |> placeInsideDiv model
 
 
 update : Msg -> Model -> Model
-update (Update abc direction newVal) model =
-    let
-        new =
-            String.toFloat newVal
-                |> Maybe.withDefault 0
-    in
-    case abc of
-        A ->
-            { model | a = updatePoint model.a direction new }
+update msg model =
+    case msg of
+        Update abc direction newVal ->
+            let
+                new =
+                    String.toFloat newVal
+                        |> Maybe.withDefault 0
+            in
+            case abc of
+                A ->
+                    { model | a = updatePoint model.a direction new }
 
-        B ->
-            { model | b = updatePoint model.b direction new }
+                B ->
+                    { model | b = updatePoint model.b direction new }
 
-        C ->
-            { model | c = updatePoint model.c direction new }
+                C ->
+                    { model | c = updatePoint model.c direction new }
+
+        Reset ->
+            initialModel
 
 
 updatePoint : Point -> Direction -> Float -> Point
@@ -121,4 +133,13 @@ rangeXY { label, model, msg } =
         [ text label
         , range { min = -1000, max = 1000, value = model.x, label = "X", msg = msg X }
         , range { min = -1000, max = 1000, value = model.y, label = "Y", msg = msg Y }
+        ]
+
+
+resetButton : { label : String, msg : Msg } -> Html Msg
+resetButton { label, msg } =
+    div []
+        [ button
+            [ Html.Events.onClick msg ]
+            [ text label ]
         ]
