@@ -73,7 +73,7 @@ view model =
             }
     in
     box
-        |> createPicture fLetter
+        |> (turn << createPicture) fLetter
         |> toSvgWithBoxes ( 500, 500 ) []
         |> placeInsideDiv model
 
