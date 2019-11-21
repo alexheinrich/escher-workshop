@@ -42,7 +42,7 @@ times n fn =
 
 flip : Picture -> Picture
 flip p =
-    p
+    flipBox >> p
 
 
 
