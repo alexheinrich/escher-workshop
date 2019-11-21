@@ -51,7 +51,7 @@ flip p =
 
 toss : Picture -> Picture
 toss p =
-    p
+    tossBox >> p
 
 
 
