@@ -16,11 +16,11 @@ import Vector exposing (Vector)
 
 
 type Msg
-    = Update ABC Direction String
+    = Update ABC Axis String
     | Reset
 
 
-type Direction
+type Axis
     = X
     | Y
 
@@ -81,7 +81,7 @@ view model =
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        Update abc direction newVal ->
+        Update abc axis newVal ->
             let
                 new =
                     String.toFloat newVal
@@ -89,26 +89,26 @@ update msg model =
             in
             case abc of
                 A ->
-                    { model | a = updateVector model.a direction new }
+                    { model | a = updateVector model.a axis new }
 
                 B ->
-                    { model | b = updateVector model.b direction new }
+                    { model | b = updateVector model.b axis new }
 
                 C ->
-                    { model | c = updateVector model.c direction new }
+                    { model | c = updateVector model.c axis new }
 
         Reset ->
             initialModel
 
 
-updateVector : Vector -> Direction -> Float -> Vector
-updateVector point direction new =
-    case direction of
+updateVector : Vector -> Axis -> Float -> Vector
+updateVector vector axis new =
+    case axis of
         X ->
-            { point | x = new }
+            { vector | x = new }
 
         Y ->
-            { point | y = new }
+            { vector | y = new }
 
 
 range : { min : Int, max : Int, value : Float, label : String, msg : String -> Msg } -> Html Msg
@@ -127,7 +127,7 @@ range { min, max, value, label, msg } =
         ]
 
 
-rangeXY : { label : String, model : Vector, msg : Direction -> String -> Msg } -> Html Msg
+rangeXY : { label : String, model : Vector, msg : Axis -> String -> Msg } -> Html Msg
 rangeXY { label, model, msg } =
     div []
         [ text label
