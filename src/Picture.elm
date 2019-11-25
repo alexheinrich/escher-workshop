@@ -49,8 +49,10 @@ flip p =
 -- Exercise 3
 
 
-toss : Picture -> Picture
+toss : (Box -> Rendering) -> (Box -> Rendering)
 toss p =
+    -- (Box -> Box) >> (Box -> Rendering)
+    -- (a -> b) -> (b -> c) -> a -> c
     tossBox >> p
 
 
@@ -64,8 +66,12 @@ aboveRatio m n p1 p2 =
 
 
 above : Picture -> Picture -> Picture
-above p1 p2 =
-    blank
+above p1 p2 box =
+    let
+        ( b1, b2 ) =
+            splitBox Vertical box
+    in
+    p1 b1 ++ p2 b2
 
 
 

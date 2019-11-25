@@ -71,9 +71,14 @@ view model =
             , b = model.b
             , c = model.c
             }
+
+        picture =
+            createPicture fLetter
     in
+    -- |> (toss << createPicture) fLetter
+    -- toSvgWithBoxes ( 500, 500 ) [] ((toss << createPicture) fLetter box)
     box
-        |> (toss << createPicture) fLetter
+        |> above (flip picture) picture
         |> toSvgWithBoxes ( 500, 500 ) []
         |> placeInsideDiv model
 

@@ -44,3 +44,22 @@ tossBox { a, b, c } =
     , b = scale 0.5 (add b c)
     , c = scale 0.5 (add c (neg b))
     }
+
+
+
+-- Excercise 4
+
+
+type Direction
+    = Vertical
+    | Horizontal
+
+
+splitBox : Direction -> Box -> ( Box, Box )
+splitBox direction box =
+    case direction of
+        Vertical ->
+            ( { box | c = scale 0.5 box.c }, { box | a = add box.a (scale 0.5 box.c), c = scale 0.5 box.c } )
+
+        Horizontal ->
+            ( box, box )
