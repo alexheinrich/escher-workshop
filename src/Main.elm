@@ -12,6 +12,7 @@ import Letter exposing (..)
 import Picture exposing (..)
 import Rendering exposing (..)
 import Svg exposing (Svg)
+import Vector exposing (Vector)
 
 
 type Msg
@@ -30,12 +31,8 @@ type ABC
     | C
 
 
-type alias Point =
-    { x : Float, y : Float }
-
-
 type alias Model =
-    { a : Point, b : Point, c : Point }
+    Box
 
 
 initialModel : Model
@@ -75,8 +72,6 @@ view model =
         picture =
             createPicture fLetter
     in
-    -- |> (toss << createPicture) fLetter
-    -- toSvgWithBoxes ( 500, 500 ) [] ((toss << createPicture) fLetter box)
     box
         |> above (flip picture) picture
         |> toSvgWithBoxes ( 500, 500 ) []
@@ -94,20 +89,20 @@ update msg model =
             in
             case abc of
                 A ->
-                    { model | a = updatePoint model.a direction new }
+                    { model | a = updateVector model.a direction new }
 
                 B ->
-                    { model | b = updatePoint model.b direction new }
+                    { model | b = updateVector model.b direction new }
 
                 C ->
-                    { model | c = updatePoint model.c direction new }
+                    { model | c = updateVector model.c direction new }
 
         Reset ->
             initialModel
 
 
-updatePoint : Point -> Direction -> Float -> Point
-updatePoint point direction new =
+updateVector : Vector -> Direction -> Float -> Vector
+updateVector point direction new =
     case direction of
         X ->
             { point | x = new }
@@ -132,7 +127,7 @@ range { min, max, value, label, msg } =
         ]
 
 
-rangeXY : { label : String, model : Point, msg : Direction -> String -> Msg } -> Html Msg
+rangeXY : { label : String, model : Vector, msg : Direction -> String -> Msg } -> Html Msg
 rangeXY { label, model, msg } =
     div []
         [ text label
