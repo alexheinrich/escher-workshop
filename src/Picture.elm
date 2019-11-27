@@ -61,17 +61,17 @@ toss p =
 
 
 aboveRatio : Int -> Int -> Picture -> Picture -> Picture
-aboveRatio m n p1 p2 =
-    blank
+aboveRatio m n p1 p2 box =
+    let
+        ( b1, b2 ) =
+            splitBox Vertical m n box
+    in
+    p1 b1 ++ p2 b2
 
 
 above : Picture -> Picture -> Picture
 above p1 p2 box =
-    let
-        ( b1, b2 ) =
-            splitBox Vertical box
-    in
-    p1 b1 ++ p2 b2
+    aboveRatio 1 1 p1 p2 box
 
 
 

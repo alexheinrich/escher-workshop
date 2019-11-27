@@ -55,11 +55,15 @@ type Direction
     | Horizontal
 
 
-splitBox : Direction -> Box -> ( Box, Box )
-splitBox direction box =
+splitBox : Direction -> Int -> Int -> Box -> ( Box, Box )
+splitBox direction m n box =
+    let
+        ratio a b =
+            toFloat a / toFloat (a + b)
+    in
     case direction of
         Vertical ->
-            ( { box | c = scale 0.5 box.c }, { box | a = add box.a (scale 0.5 box.c), c = scale 0.5 box.c } )
+            ( { box | c = scale (ratio m n) box.c }, { box | a = add box.a (scale (ratio m n) box.c), c = scale (ratio n m) box.c } )
 
         Horizontal ->
             ( box, box )

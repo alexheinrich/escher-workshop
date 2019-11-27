@@ -73,7 +73,7 @@ view model =
             createPicture fLetter
     in
     box
-        |> above (flip picture) picture
+        |> aboveRatio 1 3 (flip picture) picture
         |> toSvgWithBoxes ( 500, 500 ) []
         |> placeInsideDiv model
 
