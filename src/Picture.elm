@@ -70,8 +70,8 @@ aboveRatio m n p1 p2 box =
 
 
 above : Picture -> Picture -> Picture
-above p1 p2 box =
-    aboveRatio 1 1 p1 p2 box
+above p1 p2 =
+    aboveRatio 1 1 p1 p2
 
 
 
@@ -79,13 +79,17 @@ above p1 p2 box =
 
 
 besideRatio : Int -> Int -> Picture -> Picture -> Picture
-besideRatio m n p1 p2 =
-    blank
+besideRatio m n p1 p2 box =
+    let
+        ( b1, b2 ) =
+            splitBox Horizontal m n box
+    in
+    p1 b1 ++ p2 b2
 
 
 beside : Picture -> Picture -> Picture
 beside p1 p2 =
-    blank
+    besideRatio 1 1 p1 p2
 
 
 

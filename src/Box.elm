@@ -66,4 +66,4 @@ splitBox direction m n box =
             ( { box | c = scale (ratio m n) box.c }, { box | a = add box.a (scale (ratio m n) box.c), c = scale (ratio n m) box.c } )
 
         Horizontal ->
-            ( box, box )
+            ( { box | b = scale (ratio m n) box.b }, { box | a = add box.a (scale (ratio m n) box.b), b = scale (ratio n m) box.b } )
